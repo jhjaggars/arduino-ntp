@@ -1,0 +1,13 @@
+This library makes it easy to fetch a timestamp from an NTP timeserver. In order to use this library you will need the UDP libraries from:
+
+http://bitbucket.org/bjoern/arduino_osc/
+
+You will also need to modify the library to allow enough space in the buffers for the NTP packets. Open up UdpBytewise.h and change these lines:
+
+#define UDP_TX_PACKET_MAX_SIZE 32
+#define UDP_RX_PACKET_MAX_SIZE 32
+
+to this:
+
+#define UDP_TX_PACKET_MAX_SIZE 64
+#define UDP_RX_PACKET_MAX_SIZE 64
