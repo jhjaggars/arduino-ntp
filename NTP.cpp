@@ -13,10 +13,23 @@ NTP::~NTP()
 {
 }
 
-unsigned long NTP::get_time()
+unsigned long NTP::get_gmt()
 {
     call();
     return _send_timestamp;
+}
+
+unsigned long NTP::get_unix_gmt()
+{
+    call();
+    unsigned long seventy_years = 2208988800UL; 
+    return _send_timestamp - seventy_years;
+}
+
+unsigned long NTP::get_unix_tz(int offset)
+{
+    unsigned long t = get_unix_gmt();
+    return t + (offset * 60 * 60);
 }
 
 int NTP::get_leap_indicator(byte b)

@@ -9,7 +9,9 @@ class NTP
     public:
         NTP(byte address[]);
         ~NTP();
-        unsigned long get_time();
+        unsigned long get_gmt();
+        unsigned long get_unix_gmt();
+        unsigned long get_unix_tz(int offset);
     private:
         byte _address[4];
         int _leap_indicator;
