@@ -20,7 +20,12 @@ void loop()
 {
     if( DateTime.available() )
     {
-       Serial.println(DateTime.now()); 
+       Serial.print("The (GMT) time is presently: "); 
+       Serial.print((int)DateTime.Hour);
+       Serial.print(":");
+       Serial.print((int)DateTime.Minute);
+       Serial.print(":");
+       Serial.println((int)DateTime.Second);
     }
 
     delay(3000);
