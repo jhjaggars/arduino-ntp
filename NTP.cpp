@@ -29,7 +29,7 @@ unsigned long NTP::get_unix_gmt()
 unsigned long NTP::get_unix_tz(int offset)
 {
     unsigned long t = get_unix_gmt();
-    return t + (offset * 60 * 60);
+    return t + (offset * 3600UL);
 }
 
 int NTP::get_leap_indicator(byte b)
