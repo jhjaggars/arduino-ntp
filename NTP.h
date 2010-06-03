@@ -12,7 +12,9 @@ class NTP
         unsigned long get_gmt();
         unsigned long get_unix_gmt();
         unsigned long get_unix_tz(int offset);
+        bool is_synced();
     private:
+        bool successfully_synced;
         byte _address[4];
         int _leap_indicator;
         int _version;

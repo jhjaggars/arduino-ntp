@@ -7,6 +7,7 @@ NTP::NTP(byte address[])
     _address[1] = address[1];
     _address[2] = address[2];
     _address[3] = address[3];
+    successfully_synced = false;
 }
 
 NTP::~NTP()
@@ -30,6 +31,11 @@ unsigned long NTP::get_unix_tz(int offset)
 {
     unsigned long t = get_unix_gmt();
     return t + (offset * 3600UL);
+}
+
+bool NTP::is_synced()
+{
+    return successfully_synced;
 }
 
 int NTP::get_leap_indicator(byte b)
@@ -134,5 +140,9 @@ void NTP::call()
         _orig_timestamp = get_time_discard_precision();
         _recv_timestamp = get_time_discard_precision();
         _send_timestamp = get_time_discard_precision();
+        successfully_synced = true;
+    }
+    else {
+        successfully_synced = false; 
     }
 }
