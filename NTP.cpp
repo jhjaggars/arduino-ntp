@@ -22,9 +22,8 @@ unsigned long NTP::get_gmt()
 
 unsigned long NTP::get_unix_gmt()
 {
-    call();
     unsigned long seventy_years = 2208988800UL; 
-    return _send_timestamp - seventy_years;
+    return get_gmt() - seventy_years;
 }
 
 unsigned long NTP::get_unix_tz(int offset)
@@ -68,10 +67,9 @@ unsigned long NTP::get_time_discard_precision()
 {
     unsigned long time = get_ulong();
     // we are going to discard the sub-second stuff
-    UdpBytewise.read();
-    UdpBytewise.read();
-    UdpBytewise.read();
-    UdpBytewise.read();
+    for( int i = 0; i < 4; i++ )
+        UdpBytewise.read();
+
     return time;
 }
 
@@ -114,13 +112,19 @@ int NTP::send_ntp_packet()
     return UdpBytewise.endPacket(); 
 }
 
+bool NTP::check_sync()
+{
+    successfully_synced = (UdpBytewise.available() == 48);
+    return successfully_synced;
+}
+
 void NTP::call()
 {
     send_ntp_packet();
 
     delay(1000);
 
-    if ( UdpBytewise.available() ) {
+    if ( check_sync() ) {
         byte first_byte = UdpBytewise.read();
         _leap_indicator = get_leap_indicator(first_byte); 
         _version = get_version(first_byte);
@@ -140,9 +144,5 @@ void NTP::call()
         _orig_timestamp = get_time_discard_precision();
         _recv_timestamp = get_time_discard_precision();
         _send_timestamp = get_time_discard_precision();
-        successfully_synced = true;
-    }
-    else {
-        successfully_synced = false; 
     }
 }

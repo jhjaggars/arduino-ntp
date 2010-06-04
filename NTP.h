@@ -37,6 +37,7 @@ class NTP
         int get_leap_indicator(byte b);
         int get_version(byte b);
         int get_mode(byte b);
+        bool check_sync();
         void call();
 };
 
